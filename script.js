@@ -115,6 +115,7 @@ const getCartTotalItems = () => Object.values(cart).reduce((sum, q) => sum + q, 
 function updateCartCounter() {
   const el = document.getElementById("cart-count");
   if (el) el.textContent = getCartTotalItems();
+  renderCart();
 }
 
 function addToCart(productId, quantity = 1) {
@@ -130,6 +131,105 @@ function clearCart() {
   cart = {};
   saveCart();
   updateCartCounter();
+}
+
+function changeQty(productId, delta) {
+  const next = (cart[productId] || 0) + delta;
+  if (next <= 0) delete cart[productId];
+  else cart[productId] = next;
+  saveCart();
+  updateCartCounter();
+}
+
+function removeFromCart(productId) {
+  delete cart[productId];
+  saveCart();
+  updateCartCounter();
+}
+
+// Товары в корзине вместе с данными из каталога
+const getCartLines = () =>
+  Object.entries(cart)
+    .map(([id, qty]) => ({ product: PRODUCTS.find((p) => p.id === Number(id)), qty }))
+    .filter((line) => line.product);
+
+const getCartSum = () => getCartLines().reduce((sum, { product, qty }) => sum + product.price * qty, 0);
+
+// ── Корзина: выезжающая панель ─────────────────────────────────────
+function renderCart() {
+  const box = document.getElementById("cart-items");
+  const totalEl = document.getElementById("cart-total");
+  const footer = document.getElementById("cart-footer");
+  if (!box) return;
+
+  const lines = getCartLines();
+  if (totalEl) totalEl.textContent = formatPrice(getCartSum());
+  if (footer) footer.classList.toggle("hidden", lines.length === 0);
+
+  if (!lines.length) {
+    box.innerHTML = `
+      <div class="h-full flex flex-col items-center justify-center text-center text-dark-800/50 py-20">
+        <p class="font-display text-xl mb-2">Корзина пуста</p>
+        <p class="text-sm">Добавьте мебель из каталога</p>
+      </div>`;
+    return;
+  }
+
+  box.innerHTML = lines
+    .map(({ product: p, qty }) => `
+      <div class="flex gap-4 py-5 border-b border-brand-100">
+        <img src="${escapeHTML(p.image)}" alt="${escapeHTML(p.name)}" class="w-20 h-24 object-cover rounded-lg shrink-0">
+        <div class="flex-1 min-w-0">
+          <h4 class="font-display text-base font-medium text-dark-800 truncate">${escapeHTML(p.name)}</h4>
+          <p class="text-brand-600 font-semibold text-sm mt-0.5">${formatPrice(p.price)}</p>
+          <div class="flex items-center gap-3 mt-3">
+            <button type="button" data-cart-action="dec" data-id="${p.id}" class="w-8 h-8 rounded-full border border-brand-300 text-dark-800 hover:bg-dark-800 hover:text-white transition-colors" aria-label="Уменьшить">−</button>
+            <span class="w-6 text-center text-sm font-medium">${qty}</span>
+            <button type="button" data-cart-action="inc" data-id="${p.id}" class="w-8 h-8 rounded-full border border-brand-300 text-dark-800 hover:bg-dark-800 hover:text-white transition-colors" aria-label="Увеличить">+</button>
+          </div>
+        </div>
+        <div class="flex flex-col items-end justify-between">
+          <button type="button" data-cart-action="remove" data-id="${p.id}" class="text-dark-800/40 hover:text-dark-800 transition-colors" aria-label="Удалить">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+          <span class="text-sm font-semibold text-dark-800">${formatPrice(p.price * qty)}</span>
+        </div>
+      </div>`)
+    .join("");
+}
+
+function openCart() {
+  document.getElementById("cart-drawer")?.classList.remove("translate-x-full");
+  document.getElementById("cart-drawer")?.setAttribute("aria-hidden", "false");
+  document.getElementById("cart-overlay")?.classList.remove("opacity-0", "pointer-events-none");
+  document.body.style.overflow = "hidden";
+}
+
+function closeCart() {
+  document.getElementById("cart-drawer")?.classList.add("translate-x-full");
+  document.getElementById("cart-drawer")?.setAttribute("aria-hidden", "true");
+  document.getElementById("cart-overlay")?.classList.add("opacity-0", "pointer-events-none");
+  document.body.style.overflow = "";
+}
+
+// Оформление: переносим состав заказа в форму консультации
+function checkout() {
+  const lines = getCartLines();
+  if (!lines.length) return;
+
+  const text =
+    "Хочу оформить заказ:\n" +
+    lines.map(({ product: p, qty }) => `• ${p.name} × ${qty} — ${formatPrice(p.price * qty)}`).join("\n") +
+    `\nИтого: ${formatPrice(getCartSum())}`;
+
+  const form = document.getElementById("consultation-form");
+  const message = form?.querySelector('[name="message"]');
+  if (message) message.value = text;
+
+  closeCart();
+  document.getElementById("consultation")?.scrollIntoView({ behavior: "smooth" });
+  setTimeout(() => form?.querySelector('[name="name"]')?.focus({ preventScroll: true }), 600);
+  showToast("Заказ добавлен в форму — укажите имя и отправьте");
 }
 
 // ── Уведомление (toast) ────────────────────────────────────────────
@@ -207,9 +307,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btn) addToCart(Number(btn.dataset.addToCart));
   });
 
-  document.getElementById("cart-btn")?.addEventListener("click", () => {
-    const n = getCartTotalItems();
-    showToast(n ? `Товаров в корзине: ${n}` : "Корзина пока пуста");
+  document.getElementById("cart-btn")?.addEventListener("click", openCart);
+  document.getElementById("cart-close")?.addEventListener("click", closeCart);
+  document.getElementById("cart-overlay")?.addEventListener("click", closeCart);
+  document.getElementById("cart-clear")?.addEventListener("click", clearCart);
+  document.getElementById("cart-checkout")?.addEventListener("click", checkout);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCart(); });
+
+  document.getElementById("cart-items")?.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-cart-action]");
+    if (!btn) return;
+    const id = Number(btn.dataset.id);
+    const action = btn.dataset.cartAction;
+    if (action === "inc") changeQty(id, 1);
+    else if (action === "dec") changeQty(id, -1);
+    else if (action === "remove") removeFromCart(id);
   });
 
   const form = document.getElementById("consultation-form");
