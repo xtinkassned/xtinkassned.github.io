@@ -199,18 +199,33 @@ function renderCart() {
 }
 
 function openCart() {
-  document.getElementById("cart-drawer")?.classList.remove("translate-x-full");
+  renderCart();
+  document.getElementById("cart-drawer")?.classList.add("open");
   document.getElementById("cart-drawer")?.setAttribute("aria-hidden", "false");
-  document.getElementById("cart-overlay")?.classList.remove("opacity-0", "pointer-events-none");
+  document.getElementById("cart-overlay")?.classList.add("open");
   document.body.style.overflow = "hidden";
 }
 
 function closeCart() {
-  document.getElementById("cart-drawer")?.classList.add("translate-x-full");
+  document.getElementById("cart-drawer")?.classList.remove("open");
   document.getElementById("cart-drawer")?.setAttribute("aria-hidden", "true");
-  document.getElementById("cart-overlay")?.classList.add("opacity-0", "pointer-events-none");
+  document.getElementById("cart-overlay")?.classList.remove("open");
   document.body.style.overflow = "";
 }
+
+// Ссылки категорий в футере: включают нужный фильтр и прокручивают к каталогу
+document.addEventListener("click", (e) => {
+  const link = e.target.closest("[data-footer-category]");
+  if (!link) return;
+  e.preventDefault();
+  setCategory(link.dataset.footerCategory);
+  document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+});
+
+// Открытие корзины по клику на иконку — делегирование, работает даже если остальной код инициализации не отработал
+document.addEventListener("click", (e) => {
+  if (e.target.closest("#cart-btn")) openCart();
+});
 
 // Оформление: переносим состав заказа в форму консультации
 function checkout() {
@@ -307,7 +322,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btn) addToCart(Number(btn.dataset.addToCart));
   });
 
-  document.getElementById("cart-btn")?.addEventListener("click", openCart);
   document.getElementById("cart-close")?.addEventListener("click", closeCart);
   document.getElementById("cart-overlay")?.addEventListener("click", closeCart);
   document.getElementById("cart-clear")?.addEventListener("click", clearCart);
