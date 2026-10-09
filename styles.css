@@ -1,0 +1,275 @@
+/* ═══════════════════════════════════════════
+   LOFT & CO — Custom Styles
+   Дизайнерская мебель премиум-класса
+   ═══════════════════════════════════════════ */
+
+/* ── Scrollbar ─────────────────────────────── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #1a1a1a; }
+::-webkit-scrollbar-thumb { background: #a8977f; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #bfb5a0; }
+
+/* ── Header scroll effect ──────────────────── */
+#site-header.scrolled {
+    background: rgba(17, 17, 17, 0.95) !important;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+#site-header.scrolled #logo-text { color: #faf9f7 !important; }
+#site-header.scrolled .nav-link { color: rgba(250, 249, 247, 0.8) !important; }
+
+/* ── Hero parallax ─────────────────────────── */
+.hero-bg {
+    will-change: transform;
+    transition: transform 0.1s linear;
+}
+
+/* ── Product card enhancements ─────────────── */
+.product-card {
+    cursor: pointer;
+    transform: translateY(0);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-8px);
+}
+
+.product-card .product-img-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+
+.product-card img {
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ── Quick view modal ──────────────────────── */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(12px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: #faf9f7;
+    border-radius: 24px;
+    max-width: 900px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    transform: scale(0.85) translateY(40px);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1) translateY(0);
+}
+
+/* ── Sofa gallery carousel ─────────────────── */
+.gallery-carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+}
+
+.gallery-track {
+    display: flex;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.gallery-slide {
+    min-width: 100%;
+    position: relative;
+}
+
+.gallery-slide img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+}
+
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.gallery-nav:hover {
+    background: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.gallery-prev { left: 16px; }
+.gallery-next { right: 16px; }
+
+.gallery-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.gallery-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.gallery-dot.active {
+    background: white;
+    width: 28px;
+    border-radius: 5px;
+}
+
+/* ── Feature cards ─────────────────────────── */
+.feature-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    padding: 40px;
+    background: white;
+    transition: all 0.4s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+}
+
+.feature-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #a8977f, #d6cfc0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* ── Consultation form ─────────────────────── */
+.consultation-input {
+    width: 100%;
+    padding: 14px 20px;
+    border: 1px solid #e8e4da;
+    border-radius: 12px;
+    background: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    color: #1a1a1a;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.consultation-input:focus {
+    border-color: #a8977f;
+    box-shadow: 0 0 0 4px rgba(168, 151, 127, 0.15);
+}
+
+.consultation-input::placeholder {
+    color: #bfb5a0;
+}
+
+/* ── Stats counter animation ───────────────── */
+.stat-number {
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Testimonial card ──────────────────────── */
+.testimonial-card {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.testimonial-card::before {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    color: #e8e4da;
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    line-height: 1;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
+}
+
+/* ── Scroll reveal animation ───────────────── */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── Cart badge pulse ──────────────────────── */
+@keyframes cartPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+.cart-badge.pulse {
+    animation: cartPulse 0.4s ease;
+}
+
+/* ── Responsive adjustments ────────────────── */
+@media (max-width: 768px) {
+    .gallery-slide img { height: 300px; }
+    .feature-card { padding: 28px; }
+    .modal-content { width: 95%; border-radius: 16px; }
+}
+
+/* ── Smooth section transitions ────────────── */
+section {
+    scroll-margin-top: 80px;
+}
