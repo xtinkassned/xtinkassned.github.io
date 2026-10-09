@@ -198,7 +198,42 @@ function renderCart() {
     .join("");
 }
 
+// Если в index.html нет панели корзины (например, на сайте старая версия файла) — создаём её из JS
+function ensureCartDrawer() {
+  if (document.getElementById("cart-drawer")) return;
+
+  const style = document.createElement("style");
+  style.textContent = `
+    #cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 89; opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+    #cart-overlay.open { opacity: 1; pointer-events: auto; }
+    #cart-drawer { position: fixed; top: 0; right: 0; height: 100%; width: 100%; max-width: 28rem; background: #fff; z-index: 90;
+                   display: flex; flex-direction: column; box-shadow: -10px 0 40px rgba(0,0,0,.25);
+                   transform: translateX(100%); visibility: hidden; transition: transform .4s ease, visibility .4s; }
+    #cart-drawer.open { transform: translateX(0); visibility: visible; }
+    #site-header { z-index: 80 !important; }`;
+  document.head.appendChild(style);
+
+  document.body.insertAdjacentHTML("beforeend", `
+    <div id="cart-overlay"></div>
+    <aside id="cart-drawer" aria-label="Корзина" aria-hidden="true">
+      <div class="flex items-center justify-between px-6 py-5 border-b border-brand-100">
+        <h2 class="font-display text-2xl font-semibold text-dark-800">Корзина</h2>
+        <button id="cart-close" type="button" class="p-2 text-dark-800/60 hover:text-dark-800 transition-colors" aria-label="Закрыть корзину">✕</button>
+      </div>
+      <div id="cart-items" class="flex-1 overflow-y-auto px-6"></div>
+      <div id="cart-footer" class="px-6 py-5 border-t border-brand-100 space-y-3">
+        <div class="flex items-center justify-between">
+          <span class="text-sm uppercase tracking-widest text-dark-800/60">Итого</span>
+          <span id="cart-total" class="font-display text-2xl font-semibold text-dark-800">0 ₸</span>
+        </div>
+        <button id="cart-checkout" type="button" class="w-full py-4 bg-dark-800 text-white font-medium tracking-wider uppercase text-sm rounded-full hover:bg-dark-900 transition-colors duration-300">Оформить заказ</button>
+        <button id="cart-clear" type="button" class="w-full py-2 text-sm text-dark-800/50 hover:text-dark-800 transition-colors">Очистить корзину</button>
+      </div>
+    </aside>`);
+}
+
 function openCart() {
+  ensureCartDrawer();
   renderCart();
   document.getElementById("cart-drawer")?.classList.add("open");
   document.getElementById("cart-drawer")?.setAttribute("aria-hidden", "false");
@@ -308,41 +343,6 @@ function initHeader() {
 
 // ── Инициализация ──────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
+  ensureCartDrawer();
   renderProducts();
   updateCartCounter();
-  initHeader();
-
-  document.querySelectorAll(".category-filter").forEach((btn) =>
-    btn.addEventListener("click", () => setCategory(btn.dataset.category))
-  );
-
-  // Кнопки «В корзину» (делегирование — карточки создаются динамически)
-  document.getElementById("products-container")?.addEventListener("click", (e) => {
-    const btn = e.target.closest("[data-add-to-cart]");
-    if (btn) addToCart(Number(btn.dataset.addToCart));
-  });
-
-  document.getElementById("cart-close")?.addEventListener("click", closeCart);
-  document.getElementById("cart-overlay")?.addEventListener("click", closeCart);
-  document.getElementById("cart-clear")?.addEventListener("click", clearCart);
-  document.getElementById("cart-checkout")?.addEventListener("click", checkout);
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCart(); });
-
-  document.getElementById("cart-items")?.addEventListener("click", (e) => {
-    const btn = e.target.closest("[data-cart-action]");
-    if (!btn) return;
-    const id = Number(btn.dataset.id);
-    const action = btn.dataset.cartAction;
-    if (action === "inc") changeQty(id, 1);
-    else if (action === "dec") changeQty(id, -1);
-    else if (action === "remove") removeFromCart(id);
-  });
-
-  const form = document.getElementById("consultation-form");
-  form?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const result = await submitConsultation(Object.fromEntries(new FormData(form).entries()));
-    showToast(result.ok ? result.message : result.error);
-    if (result.ok) form.reset();
-  });
-});
