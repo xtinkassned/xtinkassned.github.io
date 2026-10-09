@@ -1,98 +1,143 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LOFT & CO — Дизайнерская мебель премиум-класса</title>
-    <style>
-        /* ── БАЗОВЫЕ СТИЛИ СТРАНИЦЫ ───────────────────────────────── */
-        html { scroll-behavior: smooth; }
-        body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #fcfcfc; color: #111; }
-        
-        /* ── ШАПКА САЙТА ────────────────────────────────────────── */
-        .site-header { background-color: #111827; color: #fff; padding: 18px 0; position: fixed; top: 0; inset-x: 0; z-index: 50; shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; }
-        .logo { font-weight: bold; font-size: 20px; letter-spacing: 3px; text-decoration: none; color: #fff; }
-        .nav-links { display: flex; gap: 24px; }
-        .nav-links a { color: #d1d5db; text-decoration: none; font-size: 12px; font-medium; tracking-wider; text-transform: uppercase; transition: color 0.3s; }
-        .nav-links a:hover { color: #fbbf24; }
-        .cart-btn { background-color: #374151; color: white; border: none; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: background 0.3s; }
-        .cart-btn:hover { background-color: #4b5563; }
+    <!-- Подключаем Tailwind CSS для красивого дизайна и анимаций -->
+    <script src="https://jsdelivr.net"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
 
-        /* ── ГЛАВНЫЙ БАННЕР (ИНТЕРЬЕР) ───────────────────────────── */
-        .hero-section { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)), url('https://unsplash.com'); background-size: cover; background-position: center; text-align: center; color: white; padding: 0 16px; box-sizing: border-box; }
-        .hero-content { max-width: 768px; margin-top: 60px; }
-        .hero-subtitle { font-size: 12px; text-transform: uppercase; tracking-widest; color: #fbbf24; margin-bottom: 12px; font-weight: 600; }
-        .hero-title { font-size: 42px; md:font-size: 60px; font-weight: 200; tracking-wide; margin-bottom: 24px; line-height: 1.2; }
-        .hero-title em { font-style: italic; }
-        .hero-desc { color: #e5e7eb; margin-bottom: 32px; font-weight: 300; font-size: 16px; line-height: 1.6; }
-        .hero-actions { display: flex; justify-content: center; gap: 16px; }
-        .btn-primary { background-color: #fff; color: #111827; padding: 12px 24px; border-radius: 8px; font-size: 12px; font-weight: 600; text-transform: uppercase; tracking-wider; text-decoration: none; transition: all 0.3s; }
-        .btn-primary:hover { background-color: #fbbf24; color: #fff; }
-        .btn-secondary { background-color: transparent; border: 1px solid #fff; color: #fff; padding: 12px 24px; border-radius: 8px; font-size: 12px; font-weight: 600; text-transform: uppercase; tracking-wider; text-decoration: none; transition: all 0.3s; }
-        .btn-secondary:hover { background-color: #fff; color: #111827; }
+    <!-- Шапка сайта -->
+    <header id="site-header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 py-4 bg-gray-900 text-white shadow-lg">
+        <div class="max-width-1200 mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold tracking-widest text-white">LOFT & CO</a>
+            
+            <!-- Кликабельное меню (Якорные ссылки для плавного скролла) -->
+            <nav class="hidden md:flex space-x-8 text-xs font-medium tracking-wider">
+                <a href="#catalog" class="hover:text-amber-400 transition">КАТАЛОГ</a>
+                <a href="#about" class="hover:text-amber-400 transition">О НАС</a>
+                <a href="#delivery" class="hover:text-amber-400 transition">ДОСТАВКА</a>
+                <a href="#warranty" class="hover:text-amber-400 transition">ГАРАНТИЯ</a>
+                <a href="#contacts" class="hover:text-amber-400 transition">КОНТАКТЫ</a>
+            </nav>
 
-        /* ── КАТАЛОГ И ФИЛЬТРЫ ───────────────────────────────────── */
-        .section-container { max-width: 1200px; margin: 0 auto; padding: 96px 24px; scroll-margin-top: 80px; }
-        .section-header { text-align: center; margin-bottom: 48px; }
-        .section-subtitle { font-size: 12px; text-transform: uppercase; tracking-widest; color: #9ca3af; margin-bottom: 8px; }
-        .section-title { font-size: 30px; font-weight: 300; tracking-wide; margin: 0; color: #111827; }
-        .filters-group { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-bottom: 48px; }
-        .category-filter { background: none; border: 1px solid #d1d5db; padding: 8px 24px; border-radius: 9999px; cursor: pointer; font-size: 12px; text-transform: uppercase; tracking-wider; color: #374151; transition: all 0.3s; }
-        .category-filter:hover { background-color: #111827; color: #fff; border-color: transparent; }
-        .category-filter.active { background-color: #111827 !important; color: #fff !important; border-color: transparent !important; }
+            <!-- Кнопка корзины (связана со script.js) -->
+            <button id="cart-btn" type="button" class="relative p-2.5 bg-gray-800 rounded-full hover:bg-gray-700 transition flex items-center gap-2">
+                🛍️ <span id="cart-count" class="font-semibold text-sm">0</span>
+            </button>
+        </div>
+    </header>
 
-        /* СЕТКА ТОВАРОВ И КАРТОЧКИ (Дублирует классы Tailwind для совместимости) */
-        .grid-layout, #products-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 32px; }
-        .product-card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: relative; transition: all 0.3s; display: flex; flex-direction: column; }
-        .product-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
-        .product-card img { width: 100%; height: 280px; object-fit: cover; transition: transform 0.5s; }
-        .product-card:hover img { transform: scale(1.05); }
-        .product-card .p-5 { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .product-card h3 { font-size: 18px; font-weight: 500; margin: 0 0 8px 0; color: #1f2937; }
-        .product-card p { font-weight: 600; color: #4b5563; margin: 0 0 12px 0; }
-        .product-card button, [data-add-to-cart] { width: 100%; background-color: #111827; color: #fff; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-size: 12px; text-transform: uppercase; tracking-wider; font-weight: 500; transition: background 0.3s; margin-top: auto; }
-        .product-card button:hover { background-color: #374151; }
+    <!-- Главный баннер (Интерьер) -->
+    <section class="relative h-screen flex items-center justify-center bg-cover bg-center pt-16" style="background-image: url('https://unsplash.com');">
+        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="relative z-10 text-center text-white px-4 max-w-3xl">
+            <p class="text-xs uppercase tracking-widest mb-3 text-amber-400">Коллекция 2026</p>
+            <h1 class="text-4xl md:text-6xl font-light tracking-wide mb-6">Мебель, которая <em>создаёт</em> пространство</h1>
+            <p class="text-gray-200 mb-8 font-light text-sm md:text-base">Авторская мебель в стиле лофт, минимализм и скандинавский модерн. Каждое изделие — результат работы лучших дизайнеров.</p>
+            <div class="flex justify-center gap-4">
+                <a href="#catalog" class="px-6 py-3 bg-white text-gray-900 text-xs font-semibold uppercase tracking-wider rounded-xl hover:bg-amber-400 hover:text-white transition">Смотреть каталог</a>
+                <a href="#contacts" class="px-6 py-3 bg-transparent border border-white text-white text-xs font-semibold uppercase tracking-wider rounded-xl hover:bg-white hover:text-gray-900 transition">Консультация</a>
+            </div>
+        </div>
+    </section>
 
-        /* ── ИНФОРМАЦИОННЫЕ БЛОКИ ────────────────────────────────── */
-        .bg-white-section { background-color: #fff; border-top: 1px solid #f3f4f6; text-align: center; }
-        .bg-gray-section { background-color: #f3f4f6; text-align: center; }
-        .info-desc { max-width: 768px; margin: 0 auto; color: #4b5563; font-size: 16px; line-height: 1.7; }
-        .delivery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; margin-top: 48px; text-align: left; }
-        .delivery-card { background: #fff; padding: 32px; rounded-2xl: 16px; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .delivery-card h3 { font-size: 18px; margin-top: 0; margin-bottom: 12px; color: #111827; }
-        .delivery-card p { color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0; }
-        .warranty-list { text-align: left; max-width: 672px; margin: 0 auto; color: #4b5563; line-height: 1.8; }
+    <!-- Раздел Каталога мебели -->
+    <section id="catalog" class="py-24 max-w-7xl mx-auto px-6 scroll-mt-20">
+        <div class="text-center mb-12">
+            <p class="text-xs uppercase tracking-widest text-gray-400 mb-2">Наша коллекция</p>
+            <h2 class="text-3xl font-light tracking-wide">Каталог мебели</h2>
+        </div>
 
-        /* ── КОНТАКТЫ И ФОРМА ────────────────────────────────────── */
-        .contacts-bg { background-color: #111827; color: white; }
-        .contacts-bg .section-title { color: white; }
-        .contacts-grid { display: grid; grid-template-columns: 1fr; md:grid-template-columns: 1fr 1fr; gap: 48px; text-align: left; max-width: 1200px; margin: 0 auto; }
-        .contacts-info p { color: #d1d5db; margin-bottom: 24px; font-size: 15px; }
-        .contacts-details p { margin: 12px 0; font-size: 14px; color: #e5e7eb; }
-        .consultation-form { display: flex; flex-direction: column; gap: 16px; }
-        .consultation-form input { width: 100%; padding: 16px; background-color: #fff; border: none; border-radius: 12px; font-size: 14px; box-sizing: border-box; outline: none; }
-        .btn-submit { width: 100%; background-color: #f59e0b; color: white; border: none; padding: 16px; border-radius: 12px; font-size: 14px; font-weight: 600; text-transform: uppercase; tracking-wider; cursor: pointer; transition: background 0.3s; }
-        .btn-submit:hover { background-color: #d97706; }
+        <!-- Кнопки категорий (Привязаны к логике из script.js) -->
+        <div class="flex flex-wrap justify-center gap-3 mb-12">
+            <button type="button" data-category="all" class="category-filter filter-btn active px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full bg-gray-800 text-white transition">Все</button>
+            <button type="button" data-category="Диваны" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition">Диваны</button>
+            <button type="button" data-category="Столы" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition">Столы</button>
+            <button type="button" data-category="Кровати" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition">Кровати</button>
+            <button type="button" data-category="Стулья" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition">Стулья</button>
+        </div>
 
-        /* ── КОРЗИНА И УВЕДОМЛЕНИЯ ────────────────────────────────── */
-        .cart-modal { position: fixed; inset: 0; z-index: 100; display: none; background-color: rgba(0,0,0,0.5); backdrop-filter: blur(4px); align-items: center; justify-content: center; padding: 16px; }
-        .cart-modal.flex { display: flex; }
-        .cart-content-box { background: #fff; border-radius: 16px; width: 100%; max-width: 448px; overflow: hidden; display: flex; flex-direction: column; max-height: 85vh; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); text-align: left; }
-        .cart-header { padding: 24px; background-color: #111827; color: white; display: flex; justify-content: space-between; align-items: center; }
-        .cart-header h3 { margin: 0; font-size: 18px; font-weight: 600; }
-        .cart-close { background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
-        #cart-items-list { padding: 24px; overflow-y: auto; flex-grow: 1; }
-        .cart-footer { padding: 24px; border-t: 1px solid #f3f4f6; background-color: #f9fafb; }
-        .cart-total-row { display: flex; justify-content: space-between; font-weight: 600; font-size: 16px; margin-bottom: 16px; color: #111827; }
-        .cart-actions-btns { display: flex; gap: 12px; }
-        .btn-clear { flex: 1; background: none; border: 1px solid #fca5a5; color: #dc2626; padding: 12px; border-radius: 12px; cursor: pointer; text-transform: uppercase; font-size: 12px; font-weight: 500; }
-        .btn-clear:hover { background-color: #fef2f2; }
-        .btn-checkout { flex: 1; background-color: #f59e0b; color: white; border: none; padding: 12px; border-radius: 12px; cursor: pointer; text-transform: uppercase; font-size: 12px; font-weight: 600; text-center: center; }
-        .btn-checkout:hover { background-color: #d97706; }
-        
-        #toast { position: fixed; bottom: 24px; right: 24px; z-index: 100; transform: translateY(80px); opacity: 0; transition: all 0.5s ease; background-color: #1f2937; color: white; padding: 14px 24px; border-radius: 12px; box-shadow: 0 10px 15px rgba(0,0,0,0.1); border: 1px solid #374151; font-size: 14px; }
-        #toast.show { transform: translateY(0); opacity: 1; }
+        <!-- Контейнер для вывода товаров из script.js -->
+        <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Сюда скрипт сам добавит карточки -->
+        </div>
+    </section>
 
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
+    <!-- Раздел "О нас" -->
+    <section id="about" class="py-20 bg-white border-t border-gray-100 scroll-mt-20">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-2xl uppercase tracking-widest text-gray-900 mb-6">О нас</h2>
+            <p class="text-gray-600 leading-relaxed text-base mb-6">
+                LOFT & CO — это дизайнерская мебель премиум-класса в стиле лофт, минимализм и скандинавский модерн. Мы создаём вещи, которые становятся центром интерьера.
+            </p>
+            <p class="text-gray-600 leading-relaxed text-base">
+                Мы работаем с массивом дуба и бука, металлом и качественными тканями. Каждое изделие проходит строгий контроль качества, а наши дизайнеры помогут подобрать мебель под ваше пространство.
+            </p>
+        </div>
+    </section>
+
+    <!-- Раздел "Доставка" -->
+    <section id="delivery" class="py-20 bg-gray-100 scroll-mt-20">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-2xl uppercase tracking-widest text-gray-900 text-center mb-12">Условия доставки</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <h3 class="text-lg font-medium mb-3">📍 По Астане</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Доставим мебель до двери в удобное для вас время. Стоимость и сроки уточняются при оформлении заявки.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <h3 class="text-lg font-medium mb-3">🚚 По Казахстану</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Отправляем в другие города проверенными транспортными компаниями. Мебель надёжно упаковывается в деревянную обрешетку на нашем складе.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <h3 class="text-lg font-medium mb-3">🛠️ Сборка</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">По желанию наши мастера привезут и соберут мебель прямо на месте, чтобы вам не пришлось ничего делать самим.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Раздел "Гарантия" -->
+    <section id="warranty" class="py-20 bg-white scroll-mt-20">
+        <div class="max-w-3xl mx-auto px-6">
+            <h2 class="text-2xl uppercase tracking-widest text-gray-900 text-center mb-8">Гарантия и надежность</h2>
+            <ul class="space-y-4 text-gray-600 text-base list-disc pl-5">
+                <li>Гарантия на всю мебель — по договору при покупке.</li>
+                <li>Бесплатный ремонт или замена при обнаружении производственного дефекта.</li>
+                <li>Профессиональная консультация по уходу за деревом, металлом и текстильной обивкой.</li>
+                <li>Для обращения по гарантии достаточно просто позвонить нам или оставить заявку ниже.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Раздел "Контакты" -->
+    <section id="contacts" class="py-20 bg-gray-900 text-white scroll-mt-20">
+        <div class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div>
+                <h2 class="text-2xl uppercase tracking-widest mb-6">Контакты</h2>
+                <p class="text-gray-400 mb-8">Оставьте заявку, и дизайнер свяжется с вами, подберёт идеальную мебель и ответит на все вопросы.</p>
+                <div class="space-y-4 text-sm text-gray-300">
+                    <p><strong>📞 Телефон:</strong> +7 (777) 123-45-67</p>
+                    <p><strong>✉️ Email:</strong> info@loftandco.kz</p>
+                    <p><strong>📍 Адрес шоурума:</strong> г. Астана, ул. Дизайнеров, 10</p>
+                </div>
+            </div>
+
+            <!-- Рабочая форма консультации, подключенная к script.js -->
+            <div>
+                <form id="consultation-form" class="space-y-4 text-gray-900">
+                    <input type="text" name="name" placeholder="Ваше имя" required class="w-full p-3.5 bg-white rounded-xl outline-none">
+                    <input type="tel" name="phone" placeholder="Ваш телефон" required class="w-full p-3.5 bg-white rounded-xl outline-none">
+                    <input type="email" name="email" placeholder="Ваш Email" class="w-full p-3.5 bg-white rounded-xl outline-none">
+                    <textarea name="message" placeholder="Какая мебель вас интересует?" rows="4" class="w-full p-3.5 bg-white rounded-xl outline-none"></textarea>
+                    <button type="submit" class="w-full py-4 bg-amber-500 text-white font-semibold uppercase text-xs tracking-wider rounded-xl hover:bg-amber-600 transition">Заказать консультацию</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Всплывающий Тост (для уведомлений из script.js) -->
