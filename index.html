@@ -4,40 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LOFT & CO — Дизайнерская мебель премиум-класса</title>
-    <!-- Подключаем Tailwind CSS для красивого дизайна и анимаций -->
+    <!-- Подключаем Tailwind CSS -->
     <script src="https://jsdelivr.net"></script>
-    <link rel="stylesheet" href="style.css">
+    
+    <!-- Встроенные стили для 100% гарантии отображения дизайна -->
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #f9fafb; color: #111827; }
+        .hero-bg {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://unsplash.com');
+        }
+        /* Стили для активной кнопки фильтра */
+        .filter-btn.active {
+            background-color: #1f2937 !important;
+            color: #ffffff !important;
+            border-color: transparent !important;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-900 font-sans">
+<body class="bg-gray-50 text-gray-950">
 
     <!-- Шапка сайта -->
-    <header id="site-header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 py-4 bg-gray-900 text-white shadow-lg">
-        <div class="max-width-1200 mx-auto px-6 flex justify-between items-center">
-            <a href="#" class="text-xl font-bold tracking-widest text-white">LOFT & CO</a>
+    <header id="site-header" class="fixed top-0 inset-x-0 z-50 py-4 bg-gray-900/90 backdrop-blur-xl text-white shadow-lg transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold tracking-widest text-white uppercase">LOFT & CO</a>
             
-            <!-- Кликабельное меню (Якорные ссылки для плавного скролла) -->
+            <!-- Главное меню (Якорные ссылки) -->
             <nav class="hidden md:flex space-x-8 text-xs font-medium tracking-wider">
-                <a href="#catalog" class="hover:text-amber-400 transition">КАТАЛОГ</a>
-                <a href="#about" class="hover:text-amber-400 transition">О НАС</a>
-                <a href="#delivery" class="hover:text-amber-400 transition">ДОСТАВКА</a>
-                <a href="#warranty" class="hover:text-amber-400 transition">ГАРАНТИЯ</a>
-                <a href="#contacts" class="hover:text-amber-400 transition">КОНТАКТЫ</a>
+                <a href="#catalog" class="text-gray-300 hover:text-amber-400 transition uppercase">КАТАЛОГ</a>
+                <a href="#about" class="text-gray-300 hover:text-amber-400 transition uppercase">О НАС</a>
+                <a href="#delivery" class="text-gray-300 hover:text-amber-400 transition uppercase">ДОСТАВКА</a>
+                <a href="#warranty" class="text-gray-300 hover:text-amber-400 transition uppercase">ГАРАНТИЯ</a>
+                <a href="#contacts" class="text-gray-300 hover:text-amber-400 transition uppercase">КОНТАКТЫ</a>
             </nav>
 
-            <!-- Кнопка корзины (связана со script.js) -->
-            <button id="cart-btn" type="button" class="relative p-2.5 bg-gray-800 rounded-full hover:bg-gray-700 transition flex items-center gap-2">
+            <!-- Кнопка корзины -->
+            <button id="cart-btn" type="button" onclick="toggleCartModal()" class="relative p-2.5 bg-gray-800 rounded-full hover:bg-gray-700 transition flex items-center gap-2 text-white cursor-pointer">
                 🛍️ <span id="cart-count" class="font-semibold text-sm">0</span>
             </button>
         </div>
     </header>
 
     <!-- Главный баннер (Интерьер) -->
-    <section class="relative h-screen flex items-center justify-center bg-cover bg-center pt-16" style="background-image: url('https://unsplash.com');">
-        <div class="absolute inset-0 bg-black/40"></div>
+    <section class="hero-bg relative h-screen flex items-center justify-center bg-cover bg-center pt-16">
         <div class="relative z-10 text-center text-white px-4 max-w-3xl">
-            <p class="text-xs uppercase tracking-widest mb-3 text-amber-400">Коллекция 2026</p>
-            <h1 class="text-4xl md:text-6xl font-light tracking-wide mb-6">Мебель, которая <em>создаёт</em> пространство</h1>
-            <p class="text-gray-200 mb-8 font-light text-sm md:text-base">Авторская мебель в стиле лофт, минимализм и скандинавский модерн. Каждое изделие — результат работы лучших дизайнеров.</p>
+            <p class="text-xs uppercase tracking-widest mb-3 text-amber-400 font-semibold">Коллекция 2026</p>
+            <h1 class="text-4xl md:text-6xl font-extralight tracking-wide mb-6">Мебель, которая <em>создаёт</em> пространство</h1>
+            <p class="text-gray-200 mb-8 font-light text-sm md:text-base leading-relaxed">Авторская мебель в стиле лофт, минимализм и скандинавский модерн. Каждое изделие — результат работы лучших дизайнеров.</p>
             <div class="flex justify-center gap-4">
                 <a href="#catalog" class="px-6 py-3 bg-white text-gray-900 text-xs font-semibold uppercase tracking-wider rounded-xl hover:bg-amber-400 hover:text-white transition">Смотреть каталог</a>
                 <a href="#contacts" class="px-6 py-3 bg-transparent border border-white text-white text-xs font-semibold uppercase tracking-wider rounded-xl hover:bg-white hover:text-gray-900 transition">Консультация</a>
@@ -45,99 +58,87 @@
         </div>
     </section>
 
-    <!-- Раздел Каталога мебели -->
+    <!-- Раздел Каталога -->
     <section id="catalog" class="py-24 max-w-7xl mx-auto px-6 scroll-mt-20">
         <div class="text-center mb-12">
-            <p class="text-xs uppercase tracking-widest text-gray-400 mb-2">Наша коллекция</p>
-            <h2 class="text-3xl font-light tracking-wide">Каталог мебели</h2>
+            <p class="text-xs uppercase tracking-widest text-gray-400 mb-2 tracking-widest">Наша коллекция</p>
+            <h2 class="text-3xl font-light tracking-wide text-gray-900">Каталог мебели</h2>
         </div>
 
-        <!-- Кнопки категорий (Привязаны к логике из script.js) -->
+        <!-- Фильтры категорий -->
         <div class="flex flex-wrap justify-center gap-3 mb-12">
-            <button type="button" data-category="all" class="category-filter filter-btn active px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full bg-gray-800 text-white transition">Все</button>
-            <button type="button" data-category="Диваны" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition">Диваны</button>
-            <button type="button" data-category="Столы" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition">Столы</button>
-            <button type="button" data-category="Кровати" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition">Кровати</button>
-            <button type="button" data-category="Стулья" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition">Стулья</button>
+            <button type="button" data-category="all" class="category-filter filter-btn active px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full bg-gray-800 text-white transition cursor-pointer">Все</button>
+            <button type="button" data-category="Диваны" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition cursor-pointer">Диваны</button>
+            <button type="button" data-category="Столы" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition cursor-pointer">Столы</button>
+            <button type="button" data-category="Кровати" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition cursor-pointer">Кровати</button>
+            <button type="button" data-category="Стулья" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition cursor-pointer">Стулья</button>
         </div>
 
         <!-- Контейнер для вывода товаров из script.js -->
         <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Сюда скрипт сам добавит карточки -->
+            <!-- Сюда script.js подставит карточки -->
         </div>
     </section>
 
     <!-- Раздел "О нас" -->
-    <section id="about" class="py-20 bg-white border-t border-gray-100 scroll-mt-20">
+    <section id="about" class="py-24 bg-white border-t border-gray-100 scroll-mt-20">
         <div class="max-w-4xl mx-auto px-6 text-center">
-            <h2 class="text-2xl uppercase tracking-widest text-gray-900 mb-6">О нас</h2>
+            <h2 class="text-2xl font-light uppercase tracking-widest text-gray-950 mb-6">О нас</h2>
             <p class="text-gray-600 leading-relaxed text-base mb-6">
                 LOFT & CO — это дизайнерская мебель премиум-класса в стиле лофт, минимализм и скандинавский модерн. Мы создаём вещи, которые становятся центром интерьера.
             </p>
             <p class="text-gray-600 leading-relaxed text-base">
-                Мы работаем с массивом дуба и бука, металлом и качественными тканями. Каждое изделие проходит строгий контроль качества, а наши дизайнеры помогут подобрать мебель под ваше пространство.
+                Мы работаем с массивом дуба и бука, металлом и качественными тканями. Каждое изделие проходит строгий контроль качества.
             </p>
         </div>
     </section>
 
     <!-- Раздел "Доставка" -->
-    <section id="delivery" class="py-20 bg-gray-100 scroll-mt-20">
-        <div class="max-w-5xl mx-auto px-6">
-            <h2 class="text-2xl uppercase tracking-widest text-gray-900 text-center mb-12">Условия доставки</h2>
+    <section id="delivery" class="py-24 bg-gray-100 scroll-mt-20">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-2xl font-light uppercase tracking-widest text-gray-950 text-center mb-12">Условия доставки</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-6 rounded-2xl shadow-sm">
-                    <h3 class="text-lg font-medium mb-3">📍 По Астане</h3>
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-medium mb-3 text-gray-900">📍 По Астане</h3>
                     <p class="text-gray-600 text-sm leading-relaxed">Доставим мебель до двери в удобное для вас время. Стоимость и сроки уточняются при оформлении заявки.</p>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm">
-                    <h3 class="text-lg font-medium mb-3">🚚 По Казахстану</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Отправляем в другие города проверенными транспортными компаниями. Мебель надёжно упаковывается в деревянную обрешетку на нашем складе.</p>
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-medium mb-3 text-gray-900">🚚 По Казахстану</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Отправляем в другие города транспортными компаниями. Мебель надёжно упаковывается на нашем складе.</p>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm">
-                    <h3 class="text-lg font-medium mb-3">🛠️ Сборка</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">По желанию наши мастера привезут и соберут мебель прямо на месте, чтобы вам не пришлось ничего делать самим.</p>
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-medium mb-3 text-gray-900">🛠️ Сборка</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">По желанию наши мастера привезут и соберут мебель на месте, чтобы вам не пришлось ничего делать самим.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Раздел "Гарантия" -->
-    <section id="warranty" class="py-20 bg-white scroll-mt-20">
+    <section id="warranty" class="py-24 bg-white scroll-mt-20">
         <div class="max-w-3xl mx-auto px-6">
-            <h2 class="text-2xl uppercase tracking-widest text-gray-900 text-center mb-8">Гарантия и надежность</h2>
+            <h2 class="text-2xl font-light uppercase tracking-widest text-gray-950 text-center mb-8">Гарантия и надежность</h2>
             <ul class="space-y-4 text-gray-600 text-base list-disc pl-5">
                 <li>Гарантия на всю мебель — по договору при покупке.</li>
-                <li>Бесплатный ремонт или замена при обнаружении производственного дефекта.</li>
-                <li>Профессиональная консультация по уходу за деревом, металлом и текстильной обивкой.</li>
-                <li>Для обращения по гарантии достаточно просто позвонить нам или оставить заявку ниже.</li>
+                <li>Бесплатный ремонт или замена при производственном дефекте.</li>
+                <li>Консультация по уходу за деревом, металлом и обивкой.</li>
+                <li>Для обращения по гарантии достаточно позвонить или оставить заявку.</li>
             </ul>
         </div>
     </section>
 
     <!-- Раздел "Контакты" -->
-    <section id="contacts" class="py-20 bg-gray-900 text-white scroll-mt-20">
-        <div class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
+    <section id="contacts" class="py-24 bg-gray-900 text-white scroll-mt-20">
+        <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
-                <h2 class="text-2xl uppercase tracking-widest mb-6">Контакты</h2>
-                <p class="text-gray-400 mb-8">Оставьте заявку, и дизайнер свяжется с вами, подберёт идеальную мебель и ответит на все вопросы.</p>
+                <h2 class="text-2xl font-light uppercase tracking-widest mb-6">Контакты и консультация</h2>
+                <p class="text-gray-400 mb-8">Оставьте заявку, и дизайнер свяжется с вами, подберёт мебель и ответит на все вопросы.</p>
                 <div class="space-y-4 text-sm text-gray-300">
-                    <p><strong>📞 Телефон:</strong> +7 (777) 123-45-67</p>
+                    <p><strong>📞 Телефон:</strong> +67 (677) 1488-67-67</p>
                     <p><strong>✉️ Email:</strong> info@loftandco.kz</p>
-                    <p><strong>📍 Адрес шоурума:</strong> г. Астана, ул. Дизайнеров, 10</p>
+                    <p><strong>📍 Адрес:</strong> Астана, ул. 67, 67</p>
                 </div>
             </div>
-
-            <!-- Рабочая форма консультации, подключенная к script.js -->
             <div>
                 <form id="consultation-form" class="space-y-4 text-gray-900">
-                    <input type="text" name="name" placeholder="Ваше имя" required class="w-full p-3.5 bg-white rounded-xl outline-none">
-                    <input type="tel" name="phone" placeholder="Ваш телефон" required class="w-full p-3.5 bg-white rounded-xl outline-none">
-                    <input type="email" name="email" placeholder="Ваш Email" class="w-full p-3.5 bg-white rounded-xl outline-none">
-                    <textarea name="message" placeholder="Какая мебель вас интересует?" rows="4" class="w-full p-3.5 bg-white rounded-xl outline-none"></textarea>
-                    <button type="submit" class="w-full py-4 bg-amber-500 text-white font-semibold uppercase text-xs tracking-wider rounded-xl hover:bg-amber-600 transition">Заказать консультацию</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Всплывающий Тост (для уведомлений из script.js) -->
+                    <input type="text" name="name" placeholder="Ваше имя" required class="w-full p-4 bg-white rounded-xl outline-none focus:ring-2 focus:ring-amber-500">
