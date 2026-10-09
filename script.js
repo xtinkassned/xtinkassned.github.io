@@ -346,3 +346,39 @@ document.addEventListener("DOMContentLoaded", () => {
   ensureCartDrawer();
   renderProducts();
   updateCartCounter();
+  initHeader();
+
+  document.querySelectorAll(".category-filter").forEach((btn) =>
+    btn.addEventListener("click", () => setCategory(btn.dataset.category))
+  );
+
+  // Кнопки «В корзину» (делегирование — карточки создаются динамически)
+  document.getElementById("products-container")?.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-add-to-cart]");
+    if (btn) addToCart(Number(btn.dataset.addToCart));
+  });
+
+  document.getElementById("cart-close")?.addEventListener("click", closeCart);
+  document.getElementById("cart-overlay")?.addEventListener("click", closeCart);
+  document.getElementById("cart-clear")?.addEventListener("click", clearCart);
+  document.getElementById("cart-checkout")?.addEventListener("click", checkout);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeCart(); });
+
+  document.getElementById("cart-items")?.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-cart-action]");
+    if (!btn) return;
+    const id = Number(btn.dataset.id);
+    const action = btn.dataset.cartAction;
+    if (action === "inc") changeQty(id, 1);
+    else if (action === "dec") changeQty(id, -1);
+    else if (action === "remove") removeFromCart(id);
+  });
+
+  const form = document.getElementById("consultation-form");
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const result = await submitConsultation(Object.fromEntries(new FormData(form).entries()));
+    showToast(result.ok ? result.message : result.error);
+    if (result.ok) form.reset();
+  });
+});
