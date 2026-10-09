@@ -4,254 +4,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LOFT & CO — Дизайнерская мебель премиум-класса</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        display: ['"Playfair Display"', 'serif'],
-                        body: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#faf9f7', 100: '#f3f1ec', 200: '#e8e4da', 300: '#d6cfc0',
-                            400: '#bfb5a0', 500: '#a8977f', 600: '#8f7d66', 700: '#766552',
-                            800: '#635447', 900: '#54483e',
-                        },
-                        dark: { 800: '#1a1a1a', 900: '#111111', 950: '#0a0a0a' }
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.6s ease-out forwards',
-                        'slide-up': 'slideUp 0.7s ease-out forwards',
-                        'float': 'float 3s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-                        slideUp: { '0%': { opacity: '0', transform: 'translateY(40px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
-                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } }
-                    }
-                }
-            }
-        }
-    </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <!-- Подключаем Tailwind CSS для дизайна -->
+    <script src="https://jsdelivr.net"></script>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-brand-50 text-dark-800 font-body antialiased">
+<body class="bg-gray-50 text-gray-900 font-sans">
 
-    <!-- HEADER / NAVIGATION -->
-    <header id="site-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-500">
-        <nav class="max-w-7xl mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-3 group">
-                <span class="font-display text-2xl font-semibold tracking-wide text-white transition-colors duration-300" id="logo-text">LOFT & CO</span>
-            </a>
-            <div class="hidden md:flex items-center gap-8 lg:gap-10">
-                <a href="#catalog" class="text-sm font-medium tracking-widest uppercase text-white/80 hover:text-white transition-colors duration-300 nav-link">Каталог</a>
-                <a href="#about" class="text-sm font-medium tracking-widest uppercase text-white/80 hover:text-white transition-colors duration-300 nav-link">О нас</a>
-                <a href="#delivery" class="text-sm font-medium tracking-widest uppercase text-white/80 hover:text-white transition-colors duration-300 nav-link">Доставка</a>
-                <a href="#warranty" class="text-sm font-medium tracking-widest uppercase text-white/80 hover:text-white transition-colors duration-300 nav-link">Гарантия</a>
-                <a href="#consultation" class="text-sm font-medium tracking-widest uppercase text-white/80 hover:text-white transition-colors duration-300 nav-link">Контакты</a>
-            </div>
-            <button id="cart-btn" class="relative flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/30 text-white hover:bg-white/10 transition-all duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-                </svg>
-                <span id="cart-count" class="absolute -top-2 -right-2 bg-brand-500 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center transition-all duration-300">0</span>
+    <!-- Шапка сайта -->
+    <header id="site-header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 py-4 bg-gray-900 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold tracking-widest text-white">LOFT & CO</a>
+            
+            <nav class="hidden md:flex space-x-8 text-xs font-medium tracking-wider">
+                <a href="#catalog" class="hover:text-amber-400 transition">КАТАЛОГ</a>
+                <a href="#about" class="hover:text-amber-400 transition">О НАС</a>
+                <a href="#delivery" class="hover:text-amber-400 transition">ДОСТАВКА</a>
+                <a href="#warranty" class="hover:text-amber-400 transition">ГАРАНТИЯ</a>
+                <a href="#contacts" class="hover:text-amber-400 transition">КОНТАКТЫ</a>
+            </nav>
+
+            <!-- Кнопка корзины (Открывает модалку при клике) -->
+            <button id="cart-btn" type="button" onclick="toggleCartModal()" class="relative p-2.5 bg-gray-800 rounded-full hover:bg-gray-700 transition flex items-center gap-2 text-white">
+                🛍️ <span id="cart-count" class="font-semibold text-sm">0</span>
             </button>
-            <button id="mobile-menu-btn" class="md:hidden text-white p-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" /></svg>
-            </button>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-dark-900/95 backdrop-blur-xl border-t border-white/10">
-            <div class="px-6 py-4 flex flex-col gap-4">
-                <a href="#catalog" class="text-sm font-medium tracking-widest uppercase text-white/80 hover:text-white transition-colors mobile-nav-link">Каталог</a>
-                <a href="#about" class="text-sm font-medium tracking-widest uppercase text-white/80 hover:text-white transition-colors mobile-nav-link">О нас</a>
-                <a href="#delivery" class="text-sm font-medium tracking-widest uppercase text-white/80 hover:text-white transition-colors mobile-nav-link">Доставка</a>
-                <a href="#warranty" class="text-sm font-medium tracking-widest uppercase text-white/80 hover:text-white transition-colors mobile-nav-link">Гарантия</a>
-                <a href="#consultation" class="text-sm font-medium tracking-widest uppercase text-white/80 hover:text-white transition-colors mobile-nav-link">Контакты</a>
-            </div>
         </div>
     </header>
 
-    <!-- MAIN CONTENT -->
-    <main>
-
-        <!-- ════════════ HERO SECTION ════════════ -->
-        <section class="relative h-screen flex items-center justify-center overflow-hidden">
-            <div class="absolute inset-0 z-0">
-                <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1920&q=80" alt="Loft Interior" class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-b from-dark-900/70 via-dark-900/50 to-dark-900/80"></div>
-            </div>
-            <div class="relative z-10 text-center px-6 max-w-4xl mx-auto">
-                <p class="text-brand-300 text-sm tracking-[0.35em] uppercase mb-6 animate-fade-in" style="animation-delay: 0.2s; opacity: 0;">Коллекция 2026</p>
-                <h1 class="font-display text-5xl md:text-7xl lg:text-8xl font-semibold text-white leading-[1.05] mb-8 animate-slide-up">
-                    Мебель, которая<br><em class="italic font-light">создаёт</em> пространство
-                </h1>
-                <p class="text-white/60 text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed font-light animate-slide-up" style="animation-delay: 0.3s; opacity: 0;">
-                    Авторская мебель в стиле лофт, минимализм и скандинавский модерн. Каждое изделие — результат работы лучших дизайнеров.
-                </p>
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up" style="animation-delay: 0.5s; opacity: 0;">
-                    <a href="#catalog" class="group relative px-10 py-4 bg-white text-dark-900 font-medium tracking-wider uppercase text-sm rounded-full overflow-hidden transition-all duration-500 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]">
-                        <span class="relative z-10">Смотреть каталог</span>
-                        <div class="absolute inset-0 bg-brand-100 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-                    </a>
-                    <a href="#consultation" class="px-10 py-4 border border-white/30 text-white font-medium tracking-wider uppercase text-sm rounded-full hover:bg-white/10 transition-all duration-300">Консультация</a>
-                </div>
-            </div>
-            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-float">
-                <div class="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center pt-2"><div class="w-1 h-3 bg-white/50 rounded-full"></div></div>
-            </div>
-            <div class="absolute top-1/4 left-8 w-20 h-20 border border-white/10 rounded-full animate-float hidden lg:block" style="animation-delay: 0.5s;"></div>
-            <div class="absolute bottom-1/3 right-12 w-32 h-32 border border-white/5 rounded-full animate-float hidden lg:block" style="animation-delay: 1s;"></div>
-        </section>
-
-        <!-- ════════════ CATALOG SECTION ════════════ -->
-        <section id="catalog" class="scroll-mt-20 py-24 md:py-32 bg-brand-50">
-            <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                <div class="text-center mb-20">
-                    <p class="text-brand-500 text-sm tracking-[0.3em] uppercase mb-4">Наша коллекция</p>
-                    <h2 class="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-dark-800 mb-6">Каталог мебели</h2>
-                    <div class="w-16 h-[1px] bg-brand-400 mx-auto"></div>
-                </div>
-                <div class="flex flex-wrap justify-center gap-3 mb-16">
-                    <button class="category-filter active px-6 py-2.5 rounded-full text-sm font-medium tracking-wider uppercase transition-all duration-300 bg-dark-800 text-white" data-category="all">Все</button>
-                    <button class="category-filter px-6 py-2.5 rounded-full text-sm font-medium tracking-wider uppercase transition-all duration-300 border border-brand-300 text-brand-700 hover:bg-dark-800 hover:text-white hover:border-transparent" data-category="Диваны">Диваны</button>
-                    <button class="category-filter px-6 py-2.5 rounded-full text-sm font-medium tracking-wider uppercase transition-all duration-300 border border-brand-300 text-brand-700 hover:bg-dark-800 hover:text-white hover:border-transparent" data-category="Столы">Столы</button>
-                    <button class="category-filter px-6 py-2.5 rounded-full text-sm font-medium tracking-wider uppercase transition-all duration-300 border border-brand-300 text-brand-700 hover:bg-dark-800 hover:text-white hover:border-transparent" data-category="Кровати">Кровати</button>
-                    <button class="category-filter px-6 py-2.5 rounded-full text-sm font-medium tracking-wider uppercase transition-all duration-300 border border-brand-300 text-brand-700 hover:bg-dark-800 hover:text-white hover:border-transparent" data-category="Стулья">Стулья</button>
-                </div>
-
-                <!-- Сюда JavaScript вставляет карточки товаров -->
-                <div id="products-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8"></div>
-            </div>
-        </section>
-
-        <!-- ════════════ ABOUT SECTION ════════════ -->
-        <section id="about" class="scroll-mt-20 py-24 md:py-32 bg-white">
-            <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <p class="text-brand-500 text-sm tracking-[0.3em] uppercase mb-4">Кто мы</p>
-                    <h2 class="font-display text-4xl md:text-5xl font-semibold text-dark-800 mb-6">О нас</h2>
-                    <div class="w-16 h-[1px] bg-brand-400 mx-auto"></div>
-                </div>
-                <div class="grid md:grid-cols-2 gap-12 items-center">
-                    <div class="space-y-5 text-dark-800/70 leading-relaxed">
-                        <p>LOFT &amp; CO — это дизайнерская мебель премиум-класса в стиле лофт, минимализм и скандинавский модерн. Мы создаём вещи, которые становятся центром интерьера.</p>
-                        <p>Мы работаем с массивом дуба и бука, металлом и качественными тканями. Каждое изделие проходит контроль качества, а наши дизайнеры помогут подобрать мебель под ваше пространство.</p>
-                    </div>
-                    <div class="grid grid-cols-3 gap-4 text-center">
-                        <div class="bg-brand-50 rounded-2xl p-6"><p class="font-display text-3xl font-semibold text-brand-600">8+</p><p class="text-xs uppercase tracking-wider text-dark-800/60 mt-2">моделей в коллекции</p></div>
-                        <div class="bg-brand-50 rounded-2xl p-6"><p class="font-display text-3xl font-semibold text-brand-600">100%</p><p class="text-xs uppercase tracking-wider text-dark-800/60 mt-2">натуральные материалы</p></div>
-                        <div class="bg-brand-50 rounded-2xl p-6"><p class="font-display text-3xl font-semibold text-brand-600">24/7</p><p class="text-xs uppercase tracking-wider text-dark-800/60 mt-2">онлайн-заявки</p></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ════════════ DELIVERY SECTION ════════════ -->
-        <section id="delivery" class="scroll-mt-20 py-24 md:py-32 bg-brand-50">
-            <div class="max-w-7xl mx-auto px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <p class="text-brand-500 text-sm tracking-[0.3em] uppercase mb-4">Условия</p>
-                    <h2 class="font-display text-4xl md:text-5xl font-semibold text-dark-800 mb-6">Доставка</h2>
-                    <div class="w-16 h-[1px] bg-brand-400 mx-auto"></div>
-                </div>
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="bg-white rounded-2xl p-8 shadow-sm">
-                        <h3 class="font-display text-xl font-medium text-dark-800 mb-3">По Астане</h3>
-                        <p class="text-sm leading-relaxed text-dark-800/70">Доставим мебель до двери в удобное для вас время. Стоимость и сроки уточняются при оформлении заявки.</p>
-                    </div>
-                    <div class="bg-white rounded-2xl p-8 shadow-sm">
-                        <h3 class="font-display text-xl font-medium text-dark-800 mb-3">По Казахстану</h3>
-                        <p class="text-sm leading-relaxed text-dark-800/70">Отправляем в другие города транспортными компаниями. Мебель надёжно упаковывается на нашем складе.</p>
-                    </div>
-                    <div class="bg-white rounded-2xl p-8 shadow-sm">
-                        <h3 class="font-display text-xl font-medium text-dark-800 mb-3">Сборка</h3>
-                        <p class="text-sm leading-relaxed text-dark-800/70">По желанию наши мастера привезут и соберут мебель на месте, чтобы вам не пришлось ничего делать самим.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ════════════ WARRANTY SECTION ════════════ -->
-        <section id="warranty" class="scroll-mt-20 py-24 md:py-32 bg-white">
-            <div class="max-w-4xl mx-auto px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <p class="text-brand-500 text-sm tracking-[0.3em] uppercase mb-4">Спокойствие</p>
-                    <h2 class="font-display text-4xl md:text-5xl font-semibold text-dark-800 mb-6">Гарантия</h2>
-                    <div class="w-16 h-[1px] bg-brand-400 mx-auto"></div>
-                </div>
-                <ul class="space-y-4 text-dark-800/70 leading-relaxed">
-                    <li class="flex gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-brand-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg><span>Гарантия на всю мебель — по договору при покупке.</span></li>
-                    <li class="flex gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-brand-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg><span>Бесплатный ремонт или замена при производственном дефекте.</span></li>
-                    <li class="flex gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-brand-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg><span>Консультация по уходу за деревом, металлом и обивкой.</span></li>
-                    <li class="flex gap-3"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-brand-500 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg><span>Для обращения по гарантии достаточно позвонить или оставить заявку в разделе «Контакты».</span></li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- ════════════ CONTACTS / CONSULTATION SECTION ════════════ -->
-        <section id="consultation" class="scroll-mt-20 py-24 md:py-32 bg-dark-900">
-            <div class="max-w-5xl mx-auto px-6 lg:px-8">
-                <div class="text-center mb-16">
-                    <p class="text-brand-300 text-sm tracking-[0.3em] uppercase mb-4">Свяжитесь с нами</p>
-                    <h2 class="font-display text-4xl md:text-5xl font-semibold text-white mb-6">Контакты и консультация</h2>
-                    <div class="w-16 h-[1px] bg-brand-400 mx-auto"></div>
-                </div>
-                <div class="grid md:grid-cols-2 gap-12">
-                    <div class="space-y-6 text-white/70">
-                        <p>Оставьте заявку, и дизайнер свяжется с вами, подберёт мебель и ответит на все вопросы.</p>
-                        <ul class="space-y-4 text-sm">
-                            <li><span class="block text-brand-300 uppercase tracking-widest text-xs mb-1">Телефон</span><a href="tel:+6767714886767" class="text-white hover:text-brand-300 transition-colors">+67 (677) 1488-67-67</a></li>
-                            <li><span class="block text-brand-300 uppercase tracking-widest text-xs mb-1">Email</span><a href="mailto:info@loftandco.kz" class="text-white hover:text-brand-300 transition-colors">info@loftandco.kz</a></li>
-                            <li><span class="block text-brand-300 uppercase tracking-widest text-xs mb-1">Адрес</span><span class="text-white">Астана, ул. 67, 67</span></li>
-                        </ul>
-                    </div>
-                    <form id="consultation-form" class="space-y-4">
-                        <input name="name" type="text" required placeholder="Ваше имя" class="w-full px-5 py-3.5 rounded-xl bg-white border border-brand-200 text-dark-800 placeholder-brand-400 focus:outline-none focus:border-brand-500 transition-colors">
-                        <input name="phone" type="tel" placeholder="Телефон" class="w-full px-5 py-3.5 rounded-xl bg-white border border-brand-200 text-dark-800 placeholder-brand-400 focus:outline-none focus:border-brand-500 transition-colors">
-                        <input name="email" type="email" placeholder="Email" class="w-full px-5 py-3.5 rounded-xl bg-white border border-brand-200 text-dark-800 placeholder-brand-400 focus:outline-none focus:border-brand-500 transition-colors">
-                        <textarea name="message" rows="4" placeholder="Сообщение" class="w-full px-5 py-3.5 rounded-xl bg-white border border-brand-200 text-dark-800 placeholder-brand-400 focus:outline-none focus:border-brand-500 transition-colors"></textarea>
-                        <button type="submit" class="w-full py-4 bg-white text-dark-900 font-medium tracking-wider uppercase text-sm rounded-full hover:bg-brand-100 transition-colors duration-300">Заказать консультацию</button>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="bg-dark-950 text-white/60 py-16">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div>
-                <h3 class="font-display text-2xl font-semibold tracking-wide mb-4 text-white">LOFT & CO</h3>
-                <p class="text-sm leading-relaxed">Дизайнерская мебель премиум-класса. Лофт, минимализм и скандинавский модерн.</p>
-            </div>
-            <div>
-                <h4 class="font-medium text-sm tracking-widest uppercase mb-4 text-white/90">Каталог</h4>
-                <ul class="space-y-2.5 text-sm"><li><a href="#catalog" class="hover:text-brand-300 transition-colors">Диваны</a></li><li><a href="#catalog" class="hover:text-brand-300 transition-colors">Столы</a></li><li><a href="#catalog" class="hover:text-brand-300 transition-colors">Кровати</a></li><li><a href="#catalog" class="hover:text-brand-300 transition-colors">Стулья</a></li></ul>
-            </div>
-            <div>
-                <h4 class="font-medium text-sm tracking-widest uppercase mb-4 text-white/90">Компания</h4>
-                <ul class="space-y-2.5 text-sm"><li><a href="#about" class="hover:text-brand-300 transition-colors">О нас</a></li><li><a href="#consultation" class="hover:text-brand-300 transition-colors">Контакты</a></li><li><a href="#delivery" class="hover:text-brand-300 transition-colors">Доставка</a></li><li><a href="#warranty" class="hover:text-brand-300 transition-colors">Гарантия</a></li></ul>
-            </div>
-            <div>
-                <h4 class="font-medium text-sm tracking-widest uppercase mb-4 text-white/90">Контакты</h4>
-                <ul class="space-y-2.5 text-sm"><li>+67 (677) 1488-67-67</li><li>info@loftandco.kz</li><li>Астана, ул. 67, 67</li></ul>
+    <!-- Главный баннер (Интерьер) -->
+    <section class="relative h-screen flex items-center justify-center bg-cover bg-center pt-16" style="background-image: url('https://unsplash.com');">
+        <div class="absolute inset-0 bg-black/40"></div>
+        <div class="relative z-10 text-center text-white px-4 max-w-3xl">
+            <p class="text-xs uppercase tracking-widest mb-3 text-amber-400">Коллекция 2026</p>
+            <h1 class="text-4xl md:text-6xl font-light tracking-wide mb-6">Мебель, которая <em>создаёт</em> пространство</h1>
+            <p class="text-gray-200 mb-8 font-light text-sm md:text-base">Авторская мебель в стиле лофт, минимализм и скандинавский модерн. Каждое изделие — результат работы лучших дизайнеров.</p>
+            <div class="flex justify-center gap-4">
+                <a href="#catalog" class="px-6 py-3 bg-white text-gray-900 text-xs font-semibold uppercase tracking-wider rounded-xl hover:bg-amber-400 hover:text-white transition">Смотреть каталог</a>
+                <a href="#contacts" class="px-6 py-3 bg-transparent border border-white text-white text-xs font-semibold uppercase tracking-wider rounded-xl hover:bg-white hover:text-gray-900 transition">Консультация</a>
             </div>
         </div>
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 mt-12 pt-8 border-t border-white/10 text-center text-xs">&copy; 2025 LOFT & CO. Все права защищены.</div>
-    </footer>
+    </section>
 
-    <!-- Toast -->
-    <div id="toast" class="fixed bottom-6 right-6 z-[100] bg-dark-900 text-white px-6 py-4 rounded-xl shadow-2xl transform translate-y-20 opacity-0 transition-all duration-500 flex items-center gap-3">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-        <span id="toast-message"></span>
-    </div>
+    <!-- Раздел Каталога мебели -->
+    <section id="catalog" class="py-24 max-w-7xl mx-auto px-6 scroll-mt-20">
+        <div class="text-center mb-12">
+            <p class="text-xs uppercase tracking-widest text-gray-400 mb-2">Наша коллекция</p>
+            <h2 class="text-3xl font-light tracking-wide">Каталог мебели</h2>
+        </div>
 
-    <script src="script.js"></script>
-</body>
-</html>
+        <!-- Кнопки категорий -->
+        <div class="flex flex-wrap justify-center gap-3 mb-12">
+            <button type="button" data-category="all" class="category-filter filter-btn active px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full bg-gray-800 text-white transition">Все</button>
+            <button type="button" data-category="Диваны" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition">Диваны</button>
+            <button type="button" data-category="Столы" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition">Столы</button>
+            <button type="button" data-category="Кровати" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition">Кровати</button>
+            <button type="button" data-category="Стулья" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition">Стулья</button>
+        </div>
+
+        <!-- Контейнер для вывода товаров из script.js -->
+        <div id="products-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Сюда скрипт сам добавит карточки -->
+        </div>
+    </section>
+
+    <!-- Раздел "О нас" -->
+    <section id="about" class="py-20 bg-white border-t border-gray-100 scroll-mt-20">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-2xl uppercase tracking-widest text-gray-900 mb-6">О нас</h2>
+            <p class="text-gray-600 leading-relaxed text-base mb-6">
+                LOFT & CO — это дизайнерская мебель премиум-класса в стиле лофт, минимализм и скандинавский модерн. Мы создаём вещи, которые становятся центром интерьера.
+            </p>
+        </div>
+    </section>
+
+    <!-- Раздел "Доставка" -->
+    <section id="delivery" class="py-20 bg-gray-100 scroll-mt-20">
+        <div class="max-w-5xl mx-auto px-6">
+            <h2 class="text-2xl uppercase tracking-widest text-gray-900 text-center mb-12">Условия доставки</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <h3 class="text-lg font-medium mb-3">📍 По Астане</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Доставим мебель до двери в удобное для вас время.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <h3 class="text-lg font-medium mb-3">🚚 По Казахстану</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Отправляем в другие города транспортными компаниями.</p>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <h3 class="text-lg font-medium mb-3">🛠️ Сборка</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">По желанию наши мастера привезут и соберут мебель на месте.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Раздел "Гарантия" -->
+    <section id="warranty" class="py-20 bg-white scroll-mt-20">
+        <div class="max-w-3xl mx-auto px-6">
+            <h2 class="text-2xl uppercase tracking-widest text-gray-900 text-center mb-8">Гарантия и надежность</h2>
+            <ul class="space-y-4 text-gray-600 text-base list-disc pl-5">
+                <li>Гарантия на всю мебель — по договору при покупке.</li>
+                <li>Бесплатный ремонт или замена при производственном дефекте.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Раздел "Контакты" -->
+    <section id="contacts" class="py-20 bg-gray-900 text-white scroll-mt-20">
+        <div class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div>
+                <h2 class="text-2xl uppercase tracking-widest mb-6">Контакты</h2>
+                <div class="space-y-4 text-sm text-gray-300">
+                    <p><strong>📞 Телефон:</strong> +67 (677) 1488-67-67</p>
+                    <p><strong>✉️ Email:</strong> info@loftandco.kz</p>
+                    <p><strong>📍 Адрес:</strong> г. Астана, ул. 67, 67</p>
+                </div>
+            </div>
+            <div>
+                <form id="consultation-form" class="space-y-4 text-gray-900">
+                    <input type="text" name="name" placeholder="Ваше имя" required class="w-full p-3.5 bg-white rounded-xl outline-none">
+                    <input type="tel" name="phone" placeholder="Ваш телефон" required class="w-full p-3.5 bg-white rounded-xl outline-none">
+                    <button type="submit" class="w-full py-4 bg-amber-500 text-white font-semibold uppercase text-xs tracking-wider rounded-xl hover:bg-amber-600 transition">Заказать консультацию</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- 🛒 НОВОЕ: Модальное окно КОРЗИНЫ -->
+    <div id="cart-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm items-center justify-center p-4">
+        <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-900 text-white">
+                <h3 class="text-lg font-semibold tracking-wide">Ваша корзина</h3>
+                <button onclick="toggleCartModal()" class="text-white hover:text-amber-400 text-xl font-bold cursor-pointer">&times;</button>
+            </div>
+            <!-- Список выбранных товаров -->
+            <div id="cart-items-list" class="p-6 overflow-y-auto flex-1 space-y-4 text-sm">
+                <!-- Сюда JS вставит товары -->
+            </div>
+            <div class="p-6 border-t border-gray-100 bg-gray-50 space-y-4">
+                <div class="flex justify-between items-center font-semibold text-base text-gray-900">
+                    <span>Итого:</span>
+                    <span id="cart-total-price">0 ₸</span>
+                </div>
+                <div class="flex gap-3">
