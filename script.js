@@ -1,0 +1,216 @@
+/* LOFT & CO — клиентская логика (замена Flask-бэкенда app.py и static/js/main.js) */
+
+// ── Каталог товаров (цены в тенге) ─────────────────────────────────
+const PRODUCTS = [
+  { id: 1, name: "Nordic Loft Sofa", category: "Диваны", price: 890000,
+    image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=800&q=80",
+    description: "Трёхместный диван в скандинавском стиле" },
+  { id: 2, name: "Industrial Corner Sofa", category: "Диваны", price: 1250000,
+    image: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=800&q=80",
+    description: "Угловой диван с металлическим каркасом" },
+  { id: 3, name: "Minimalist Oak Table", category: "Столы", price: 475000,
+    image: "https://images.unsplash.com/photo-1577140917170-285929fb55b7?w=800&q=80",
+    description: "Обеденный стол из массива дуба" },
+  { id: 4, name: "Steel & Wood Desk", category: "Столы", price: 632000,
+    image: "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?w=800&q=80",
+    description: "Рабочий стол с металлическими ножками" },
+  { id: 5, name: "Loft King Bed", category: "Кровати", price: 915000,
+    image: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800&q=80",
+    description: "Кровать с деревянным изголовьем king-size" },
+  { id: 6, name: "Scandinavian Bed Frame", category: "Кровати", price: 780000,
+    image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80",
+    description: "Минималистичная кровать из бука" },
+  { id: 7, name: "Velvet Lounge Chair", category: "Стулья", price: 254900,
+    image: "https://images.unsplash.com/photo-1580480055273-228ff5388ef8?w=800&q=80",
+    description: "Кресло с бархатной обивкой" },
+  { id: 8, name: "Industrial Dining Chair", category: "Стулья", price: 132500,
+    image: "https://images.unsplash.com/photo-1503602642458-232111445657?w=800&q=80",
+    description: "Стул в индустриальном стиле, металл + дерево" },
+];
+
+const ALL = "all";
+let activeCategory = ALL;
+
+// ── Утилиты ────────────────────────────────────────────────────────
+const formatPrice = (price) => price.toLocaleString("ru-RU") + " ₸";
+
+const escapeHTML = (str) =>
+  String(str).replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  }[c]));
+
+const getFilteredProducts = (category = activeCategory) =>
+  category === ALL ? PRODUCTS : PRODUCTS.filter((p) => p.category === category);
+
+// ── Вывод товаров в HTML ───────────────────────────────────────────
+const CART_ICON = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" /></svg>`;
+
+function productCardHTML(p) {
+  const name = escapeHTML(p.name);
+  const category = escapeHTML(p.category);
+  const price = formatPrice(p.price);
+  return `
+    <div class="product-card group relative bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500" data-category="${category}">
+      <div class="relative aspect-[4/5] overflow-hidden">
+        <img src="${escapeHTML(p.image)}" alt="${name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+        <div class="absolute inset-0 bg-gradient-to-t from-dark-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <span class="absolute top-4 left-4 px-3 py-1 bg-white/80 backdrop-blur-sm text-dark-800 text-xs font-medium tracking-wider uppercase rounded-full">${category}</span>
+        <div class="absolute inset-x-0 bottom-0 p-6 translate-y-full group-hover:translate-y-0 transition-transform duration-500">
+          <p class="text-white/80 text-sm mb-2">${escapeHTML(p.description)}</p>
+          <button type="button" data-add-to-cart="${p.id}" class="w-full py-3 bg-white text-dark-900 font-medium tracking-wider uppercase text-xs rounded-xl hover:bg-brand-100 transition-all duration-300 flex items-center justify-center gap-2">
+            ${CART_ICON}
+            В корзину
+          </button>
+        </div>
+        <span class="absolute top-4 right-4 px-3 py-1.5 bg-dark-900/80 backdrop-blur-sm text-white font-semibold rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-[-10px] group-hover:translate-y-0">${price}</span>
+      </div>
+      <div class="p-5">
+        <h3 class="font-display text-lg font-medium text-dark-800 mb-1">${name}</h3>
+        <p class="text-brand-600 font-semibold">${price}</p>
+      </div>
+    </div>`;
+}
+
+function renderProducts(products = getFilteredProducts()) {
+  const container = document.getElementById("products-container");
+  if (!container) return;
+  container.innerHTML = products.length
+    ? products.map(productCardHTML).join("")
+    : '<p class="col-span-full text-center text-brand-600">Товары не найдены.</p>';
+}
+
+// ── Фильтр по категориям ───────────────────────────────────────────
+const FILTER_ACTIVE = ["bg-dark-800", "text-white"];
+const FILTER_INACTIVE = ["border", "border-brand-300", "text-brand-700",
+  "hover:bg-dark-800", "hover:text-white", "hover:border-transparent"];
+
+function setCategory(category) {
+  activeCategory = category;
+  document.querySelectorAll(".category-filter").forEach((btn) => {
+    const isActive = btn.dataset.category === category;
+    btn.classList.toggle("active", isActive);
+    FILTER_ACTIVE.forEach((c) => btn.classList.toggle(c, isActive));
+    FILTER_INACTIVE.forEach((c) => btn.classList.toggle(c, !isActive));
+  });
+  renderProducts();
+}
+
+// ── Корзина (localStorage вместо серверной памяти) ─────────────────
+const CART_KEY = "loftco_cart";
+
+function loadCart() {
+  try { return JSON.parse(localStorage.getItem(CART_KEY)) || {}; }
+  catch { return {}; }
+}
+
+function saveCart() {
+  try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
+  catch { /* хранилище недоступно — корзина просто не сохранится */ }
+}
+
+let cart = loadCart(); // { productId: quantity }
+
+const getCartTotalItems = () => Object.values(cart).reduce((sum, q) => sum + q, 0);
+
+function updateCartCounter() {
+  const el = document.getElementById("cart-count");
+  if (el) el.textContent = getCartTotalItems();
+}
+
+function addToCart(productId, quantity = 1) {
+  const product = PRODUCTS.find((p) => p.id === productId);
+  if (!product) return;
+  cart[productId] = (cart[productId] || 0) + quantity;
+  saveCart();
+  updateCartCounter();
+  showToast(`«${product.name}» добавлен в корзину`);
+}
+
+function clearCart() {
+  cart = {};
+  saveCart();
+  updateCartCounter();
+}
+
+// ── Уведомление (toast) ────────────────────────────────────────────
+let toastTimer;
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  const text = document.getElementById("toast-message");
+  if (!toast || !text) return;
+  text.textContent = message;
+  toast.classList.remove("translate-y-20", "opacity-0");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.add("translate-y-20", "opacity-0"), 2500);
+}
+
+// ── Заявка на консультацию (если на странице есть форма) ───────────
+// Без бэкенда заявки нужно отправлять во внешний сервис, например Formspree.
+const FORM_ENDPOINT = ""; // например: "https://formspree.io/f/xxxxxxxx"
+
+async function submitConsultation(formData) {
+  const name = (formData.name || "").trim();
+  if (!name) return { ok: false, error: "Укажите ваше имя" };
+  if (!FORM_ENDPOINT) return { ok: false, error: "Отправка заявок пока не настроена" };
+
+  try {
+    const res = await fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(formData),
+    });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return { ok: true, message: `Спасибо, ${name}! Дизайнер свяжется с вами в ближайшее время.` };
+  } catch (err) {
+    console.error(err);
+    return { ok: false, error: "Не удалось отправить заявку. Попробуйте позже." };
+  }
+}
+
+// ── Шапка и мобильное меню ─────────────────────────────────────────
+function initHeader() {
+  const header = document.getElementById("site-header");
+  const onScroll = () => {
+    if (!header) return;
+    const scrolled = window.scrollY > 50;
+    ["bg-dark-900/90", "backdrop-blur-xl", "shadow-lg"].forEach((c) => header.classList.toggle(c, scrolled));
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  const menu = document.getElementById("mobile-menu");
+  document.getElementById("mobile-menu-btn")?.addEventListener("click", () => menu?.classList.toggle("hidden"));
+  document.querySelectorAll(".mobile-nav-link").forEach((a) =>
+    a.addEventListener("click", () => menu?.classList.add("hidden"))
+  );
+}
+
+// ── Инициализация ──────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  renderProducts();
+  updateCartCounter();
+  initHeader();
+
+  document.querySelectorAll(".category-filter").forEach((btn) =>
+    btn.addEventListener("click", () => setCategory(btn.dataset.category))
+  );
+
+  // Кнопки «В корзину» (делегирование — карточки создаются динамически)
+  document.getElementById("products-container")?.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-add-to-cart]");
+    if (btn) addToCart(Number(btn.dataset.addToCart));
+  });
+
+  document.getElementById("cart-btn")?.addEventListener("click", () => {
+    const n = getCartTotalItems();
+    showToast(n ? `Товаров в корзине: ${n}` : "Корзина пока пуста");
+  });
+
+  const form = document.getElementById("consultation-form");
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const result = await submitConsultation(Object.fromEntries(new FormData(form).entries()));
+    showToast(result.ok ? result.message : result.error);
+    if (result.ok) form.reset();
+  });
+});
