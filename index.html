@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LOFT & CO — Дизайнерская мебель премиум-класса</title>
-    <!-- Подключаем Tailwind CSS для дизайна -->
+    <!-- Подключаем Tailwind CSS для красивого дизайна и анимаций -->
     <script src="https://jsdelivr.net"></script>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -12,9 +12,10 @@
 
     <!-- Шапка сайта -->
     <header id="site-header" class="fixed top-0 inset-x-0 z-50 transition-all duration-300 py-4 bg-gray-900 text-white shadow-lg">
-        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+        <div class="max-width-1200 mx-auto px-6 flex justify-between items-center">
             <a href="#" class="text-xl font-bold tracking-widest text-white">LOFT & CO</a>
             
+            <!-- Кликабельное меню (Якорные ссылки для плавного скролла) -->
             <nav class="hidden md:flex space-x-8 text-xs font-medium tracking-wider">
                 <a href="#catalog" class="hover:text-amber-400 transition">КАТАЛОГ</a>
                 <a href="#about" class="hover:text-amber-400 transition">О НАС</a>
@@ -23,8 +24,8 @@
                 <a href="#contacts" class="hover:text-amber-400 transition">КОНТАКТЫ</a>
             </nav>
 
-            <!-- Кнопка корзины (Открывает модалку при клике) -->
-            <button id="cart-btn" type="button" onclick="toggleCartModal()" class="relative p-2.5 bg-gray-800 rounded-full hover:bg-gray-700 transition flex items-center gap-2 text-white">
+            <!-- Кнопка корзины (связана со script.js) -->
+            <button id="cart-btn" type="button" class="relative p-2.5 bg-gray-800 rounded-full hover:bg-gray-700 transition flex items-center gap-2">
                 🛍️ <span id="cart-count" class="font-semibold text-sm">0</span>
             </button>
         </div>
@@ -51,7 +52,7 @@
             <h2 class="text-3xl font-light tracking-wide">Каталог мебели</h2>
         </div>
 
-        <!-- Кнопки категорий -->
+        <!-- Кнопки категорий (Привязаны к логике из script.js) -->
         <div class="flex flex-wrap justify-center gap-3 mb-12">
             <button type="button" data-category="all" class="category-filter filter-btn active px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full bg-gray-800 text-white transition">Все</button>
             <button type="button" data-category="Диваны" class="category-filter filter-btn px-5 py-2 text-xs font-medium uppercase tracking-wider rounded-full border border-gray-300 text-gray-700 hover:bg-gray-800 hover:text-white transition">Диваны</button>
@@ -73,6 +74,9 @@
             <p class="text-gray-600 leading-relaxed text-base mb-6">
                 LOFT & CO — это дизайнерская мебель премиум-класса в стиле лофт, минимализм и скандинавский модерн. Мы создаём вещи, которые становятся центром интерьера.
             </p>
+            <p class="text-gray-600 leading-relaxed text-base">
+                Мы работаем с массивом дуба и бука, металлом и качественными тканями. Каждое изделие проходит строгий контроль качества, а наши дизайнеры помогут подобрать мебель под ваше пространство.
+            </p>
         </div>
     </section>
 
@@ -83,15 +87,15 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="bg-white p-6 rounded-2xl shadow-sm">
                     <h3 class="text-lg font-medium mb-3">📍 По Астане</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Доставим мебель до двери в удобное для вас время.</p>
+                    <p class="text-gray-600 text-sm leading-relaxed">Доставим мебель до двери в удобное для вас время. Стоимость и сроки уточняются при оформлении заявки.</p>
                 </div>
                 <div class="bg-white p-6 rounded-2xl shadow-sm">
                     <h3 class="text-lg font-medium mb-3">🚚 По Казахстану</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">Отправляем в другие города транспортными компаниями.</p>
+                    <p class="text-gray-600 text-sm leading-relaxed">Отправляем в другие города проверенными транспортными компаниями. Мебель надёжно упаковывается в деревянную обрешетку на нашем складе.</p>
                 </div>
                 <div class="bg-white p-6 rounded-2xl shadow-sm">
                     <h3 class="text-lg font-medium mb-3">🛠️ Сборка</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">По желанию наши мастера привезут и соберут мебель на месте.</p>
+                    <p class="text-gray-600 text-sm leading-relaxed">По желанию наши мастера привезут и соберут мебель прямо на месте, чтобы вам не пришлось ничего делать самим.</p>
                 </div>
             </div>
         </div>
@@ -103,7 +107,9 @@
             <h2 class="text-2xl uppercase tracking-widest text-gray-900 text-center mb-8">Гарантия и надежность</h2>
             <ul class="space-y-4 text-gray-600 text-base list-disc pl-5">
                 <li>Гарантия на всю мебель — по договору при покупке.</li>
-                <li>Бесплатный ремонт или замена при производственном дефекте.</li>
+                <li>Бесплатный ремонт или замена при обнаружении производственного дефекта.</li>
+                <li>Профессиональная консультация по уходу за деревом, металлом и текстильной обивкой.</li>
+                <li>Для обращения по гарантии достаточно просто позвонить нам или оставить заявку ниже.</li>
             </ul>
         </div>
     </section>
@@ -113,36 +119,25 @@
         <div class="max-w-5xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
                 <h2 class="text-2xl uppercase tracking-widest mb-6">Контакты</h2>
+                <p class="text-gray-400 mb-8">Оставьте заявку, и дизайнер свяжется с вами, подберёт идеальную мебель и ответит на все вопросы.</p>
                 <div class="space-y-4 text-sm text-gray-300">
-                    <p><strong>📞 Телефон:</strong> +67 (677) 1488-67-67</p>
+                    <p><strong>📞 Телефон:</strong> +7 (777) 123-45-67</p>
                     <p><strong>✉️ Email:</strong> info@loftandco.kz</p>
-                    <p><strong>📍 Адрес:</strong> г. Астана, ул. 67, 67</p>
+                    <p><strong>📍 Адрес шоурума:</strong> г. Астана, ул. Дизайнеров, 10</p>
                 </div>
             </div>
+
+            <!-- Рабочая форма консультации, подключенная к script.js -->
             <div>
                 <form id="consultation-form" class="space-y-4 text-gray-900">
                     <input type="text" name="name" placeholder="Ваше имя" required class="w-full p-3.5 bg-white rounded-xl outline-none">
                     <input type="tel" name="phone" placeholder="Ваш телефон" required class="w-full p-3.5 bg-white rounded-xl outline-none">
+                    <input type="email" name="email" placeholder="Ваш Email" class="w-full p-3.5 bg-white rounded-xl outline-none">
+                    <textarea name="message" placeholder="Какая мебель вас интересует?" rows="4" class="w-full p-3.5 bg-white rounded-xl outline-none"></textarea>
                     <button type="submit" class="w-full py-4 bg-amber-500 text-white font-semibold uppercase text-xs tracking-wider rounded-xl hover:bg-amber-600 transition">Заказать консультацию</button>
                 </form>
             </div>
         </div>
     </section>
 
-    <!-- 🛒 НОВОЕ: Модальное окно КОРЗИНЫ -->
-    <div id="cart-modal" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-sm items-center justify-center p-4">
-        <div class="bg-white rounded-2xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col max-h-[85vh]">
-            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-900 text-white">
-                <h3 class="text-lg font-semibold tracking-wide">Ваша корзина</h3>
-                <button onclick="toggleCartModal()" class="text-white hover:text-amber-400 text-xl font-bold cursor-pointer">&times;</button>
-            </div>
-            <!-- Список выбранных товаров -->
-            <div id="cart-items-list" class="p-6 overflow-y-auto flex-1 space-y-4 text-sm">
-                <!-- Сюда JS вставит товары -->
-            </div>
-            <div class="p-6 border-t border-gray-100 bg-gray-50 space-y-4">
-                <div class="flex justify-between items-center font-semibold text-base text-gray-900">
-                    <span>Итого:</span>
-                    <span id="cart-total-price">0 ₸</span>
-                </div>
-                <div class="flex gap-3">
+    <!-- Всплывающий Тост (для уведомлений из script.js) -->
